@@ -1,0 +1,572 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | CampusShare{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-layout">
+
+    <!-- =================================
+         SIDEBAR
+    ================================== -->
+
+    <aside class="dashboard-sidebar">
+
+        <a href="{{ url_for('home') }}" class="sidebar-brand">
+            <span class="brand-icon">C</span>
+            Campus<span>Share</span>
+        </a>
+
+        <div class="sidebar-menu">
+
+            <span class="sidebar-label">WORKSPACE</span>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="sidebar-link active">
+                <span>▦</span>
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('browse_resources') }}"
+               class="sidebar-link">
+                <span>⌕</span>
+                Explore Resources
+            </a>
+
+            <a href="{{ url_for('add_resource') }}"
+               class="sidebar-link">
+                <span>＋</span>
+                Add Resource
+            </a>
+            <a href="{{ url_for('my_room_listings') }}"
+            class="sidebar-link">
+                <span>⌂</span>
+                My Room Listings
+            </a>
+            <span class="sidebar-label">MY ACTIVITY</span>
+
+            <a href="{{ url_for('my_bookings') }}"
+               class="sidebar-link">
+                <span>▤</span>
+                My Bookings
+            </a>
+
+            <a href="{{ url_for('booking_requests') }}"
+               class="sidebar-link">
+                <span>✉</span>
+                Booking Requests
+            </a>
+
+        </div>
+
+        <!-- STUDENT PROFILE -->
+
+        <div class="sidebar-profile">
+
+            <div class="sidebar-avatar">
+                {{ student_name[0]|upper }}
+            </div>
+
+            <div class="sidebar-profile-info">
+                <strong>{{ student_name }}</strong>
+                <small>Campus Student</small>
+            </div>
+
+        </div>
+
+        <a href="{{ url_for('logout') }}" class="sidebar-logout">
+            <span>↪</span>
+            Logout
+        </a>
+
+    </aside>
+
+
+    <!-- =================================
+         MAIN DASHBOARD
+    ================================== -->
+
+    <main class="premium-dashboard">
+
+        <!-- WELCOME HEADER -->
+
+        <section class="dash-hero">
+
+            <div class="dash-hero-content">
+
+                <span class="dash-eyebrow">
+                    YOUR CAMPUS, YOUR COMMUNITY
+                </span>
+
+                <h1>Welcome back, {{ student_name }}! 👋</h1>
+
+                <p>
+                    Everything you need to manage your resources
+                    and bookings, all in one place.
+                </p>
+
+                <a href="{{ url_for('browse_resources') }}"
+                   class="dash-explore-btn">
+                    Explore Marketplace <span>→</span>
+                </a>
+
+            </div>
+
+            <div class="dash-hero-art">
+
+                <div class="dash-art-circle">🎓</div>
+
+                <div class="dash-art-label">
+                    <span>✨</span>
+                    Your student community
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             STATISTICS
+        ================================== -->
+
+        <section class="dash-overview">
+
+            <div class="dash-section-heading">
+
+                <div>
+                    <span class="dash-section-label">OVERVIEW</span>
+                    <h2>Your Activity</h2>
+                </div>
+
+                <span class="dash-live-label">
+                    <span></span>
+                    Account Overview
+                </span>
+
+            </div>
+
+            <div class="dash-stats-grid">
+
+                <!-- MY RESOURCES -->
+
+                <div class="dash-stat-card">
+
+                    <div class="dash-stat-top">
+                        <div class="dash-stat-icon blue">📦</div>
+                        <span class="dash-stat-caption">
+                            YOUR LISTINGS
+                        </span>
+                    </div>
+
+                    <h3>{{ my_resources }}</h3>
+                    <p>My Resources</p>
+
+                    <a href="{{ url_for('add_resource') }}">
+                        Add another resource →
+                    </a>
+
+                </div>
+
+
+                <!-- MY BOOKINGS -->
+
+                <div class="dash-stat-card">
+
+                    <div class="dash-stat-top">
+                        <div class="dash-stat-icon purple">📋</div>
+                        <span class="dash-stat-caption">
+                            RENTAL ACTIVITY
+                        </span>
+                    </div>
+
+                    <h3>{{ my_bookings }}</h3>
+                    <p>My Bookings</p>
+
+                    <a href="{{ url_for('my_bookings') }}">
+                        View my bookings →
+                    </a>
+
+                </div>
+
+
+                <!-- PENDING REQUESTS -->
+
+                <div class="dash-stat-card">
+
+                    <div class="dash-stat-top">
+                        <div class="dash-stat-icon orange">🔔</div>
+                        <span class="dash-stat-caption">
+                            NEEDS ATTENTION
+                        </span>
+                    </div>
+
+                    <h3>{{ pending_requests }}</h3>
+                    <p>Pending Requests</p>
+
+                    <a href="{{ url_for('booking_requests') }}">
+                        Manage requests →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             QUICK ACTIONS
+        ================================== -->
+
+        <section class="dash-actions-section">
+
+            <div class="dash-section-heading">
+
+                <div>
+                    <span class="dash-section-label">
+                        GET THINGS DONE
+                    </span>
+
+                    <h2>Quick Actions</h2>
+
+                    <p>Jump straight into what you want to do.</p>
+                </div>
+
+            </div>
+
+
+            <div class="dash-actions-grid">
+
+                <!-- ADD RESOURCE -->
+
+                <a href="{{ url_for('add_resource') }}"
+                   class="dash-action-card">
+
+                    <div class="dash-action-icon blue">＋</div>
+
+                    <div>
+                        <h3>List a Resource</h3>
+                        <p>
+                            Share something useful with your
+                            campus community.
+                        </p>
+                    </div>
+
+                    <span class="dash-arrow">↗</span>
+
+                </a>
+
+
+                <!-- EXPLORE RESOURCES -->
+
+                <a href="{{ url_for('browse_resources') }}"
+                   class="dash-action-card">
+
+                    <div class="dash-action-icon green">⌕</div>
+
+                    <div>
+                        <h3>Explore Resources</h3>
+                        <p>
+                            Discover items available for rent
+                            on campus.
+                        </p>
+                    </div>
+
+                    <span class="dash-arrow">↗</span>
+
+                </a>
+
+
+                <!-- MY BOOKINGS -->
+
+                <a href="{{ url_for('my_bookings') }}"
+                   class="dash-action-card">
+
+                    <div class="dash-action-icon purple">▤</div>
+
+                    <div>
+                        <h3>My Bookings</h3>
+                        <p>
+                            Check the status of your rental requests.
+                        </p>
+                    </div>
+
+                    <span class="dash-arrow">↗</span>
+
+                </a>
+
+
+                <!-- BOOKING REQUESTS -->
+
+                <a href="{{ url_for('booking_requests') }}"
+                   class="dash-action-card">
+
+                    <div class="dash-action-icon orange">✉</div>
+
+                    <div>
+                        <h3>Booking Requests</h3>
+                        <p>
+                            Review requests received for your resources.
+                        </p>
+                    </div>
+
+                    <span class="dash-arrow">↗</span>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             RECENT ACTIVITY
+        ================================== -->
+
+        <section class="dash-activity-section">
+
+            <div class="dash-section-heading">
+
+                <div>
+                    <span class="dash-section-label">
+                        YOUR CAMPUS ACTIVITY
+                    </span>
+
+                    <h2>Recent Activity</h2>
+
+                    <p>
+                        Keep track of your latest rental activities.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="dash-activity-grid">
+
+                <!-- MY RECENT BOOKINGS -->
+
+                <div class="dash-activity-card">
+
+                    <div class="activity-card-heading">
+
+                        <div>
+                            <h3>My Recent Bookings</h3>
+                            <p>Resources you have requested.</p>
+                        </div>
+
+                        <a href="{{ url_for('my_bookings') }}">
+                            View All →
+                        </a>
+
+                    </div>
+
+
+                    {% if recent_bookings %}
+
+                        {% for booking in recent_bookings %}
+
+                        <div class="activity-item">
+
+                            <div class="activity-item-icon">
+                                📦
+                            </div>
+
+                            <div class="activity-item-details">
+
+                                <h4>{{ booking.resource_title }}</h4>
+
+                                <p>
+                                    Owner: {{ booking.other_student }}
+                                </p>
+
+                                <small>
+                                    {{ booking.start_date }}
+                                    –
+                                    {{ booking.end_date }}
+                                </small>
+
+                            </div>
+
+
+                            <div class="activity-item-right">
+
+                                <strong>
+                                    ₹{{ "%.2f"|format(booking.total_price) }}
+                                </strong>
+
+                                <span class="activity-status
+                                    {% if booking.status == 'Accepted' %}
+                                        status-accepted
+                                    {% elif booking.status == 'Rejected' %}
+                                        status-rejected
+                                    {% else %}
+                                        status-pending
+                                    {% endif %}">
+
+                                    {{ booking.status }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+                        <div class="activity-empty">
+
+                            <span>📭</span>
+
+                            <h4>No bookings yet</h4>
+
+                            <p>
+                                Explore the marketplace and book
+                                your first resource.
+                            </p>
+
+                            <a href="{{ url_for('browse_resources') }}">
+                                Explore Resources →
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- REQUESTS RECEIVED -->
+
+                <div class="dash-activity-card">
+
+                    <div class="activity-card-heading">
+
+                        <div>
+                            <h3>Requests Received</h3>
+                            <p>Students requesting your resources.</p>
+                        </div>
+
+                        <a href="{{ url_for('booking_requests') }}">
+                            View All →
+                        </a>
+
+                    </div>
+
+
+                    {% if received_requests %}
+
+                        {% for booking in received_requests %}
+
+                        <div class="activity-item">
+
+                            <div class="activity-item-icon received-icon">
+                                ✉
+                            </div>
+
+                            <div class="activity-item-details">
+
+                                <h4>{{ booking.resource_title }}</h4>
+
+                                <p>
+                                    Requested by: {{ booking.other_student }}
+                                </p>
+
+                                <small>
+                                    {{ booking.start_date }}
+                                    –
+                                    {{ booking.end_date }}
+                                </small>
+
+                            </div>
+
+
+                            <div class="activity-item-right">
+
+                                <strong>
+                                    ₹{{ "%.2f"|format(booking.total_price) }}
+                                </strong>
+
+                                <span class="activity-status
+                                    {% if booking.status == 'Accepted' %}
+                                        status-accepted
+                                    {% elif booking.status == 'Rejected' %}
+                                        status-rejected
+                                    {% else %}
+                                        status-pending
+                                    {% endif %}">
+
+                                    {{ booking.status }}
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+
+                    {% else %}
+
+                        <div class="activity-empty">
+
+                            <span>📨</span>
+
+                            <h4>No requests received</h4>
+
+                            <p>
+                                List your resources to receive
+                                rental requests.
+                            </p>
+
+                            <a href="{{ url_for('add_resource') }}">
+                                List a Resource →
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================
+             COMMUNITY BANNER
+        ================================== -->
+
+        <section class="dash-community">
+
+            <div>
+
+                <span>THE POWER OF SHARING</span>
+
+                <h2>Small shares. Big impact.</h2>
+
+                <p>
+                    Make better use of resources, save money,
+                    and build a stronger campus community.
+                </p>
+
+            </div>
+
+            <div class="dash-community-icon">
+                🤝
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+{% endblock %}

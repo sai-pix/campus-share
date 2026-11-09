@@ -1,0 +1,167 @@
+
+{% extends "base.html" %}
+
+{% block title %}Post a Room | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="room-page">
+
+    <div class="room-form-card">
+
+        <div class="room-form-heading">
+            <span class="room-eyebrow">CAMPUSSTAY</span>
+            <h1>Share Your Space</h1>
+            <p>List your room or vacant bed and connect with students looking for accommodation.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" id="roomForm">
+
+            <h3 class="room-section-title">01. Room Information</h3>
+
+            <div class="room-field">
+                <label>Listing Title</label>
+                <input type="text" name="title"
+                       placeholder="e.g. Spacious room near college"
+                       required>
+            </div>
+
+            <div class="room-field">
+                <label>Description</label>
+                <textarea name="description" rows="4"
+                          placeholder="Describe the room, surroundings and other details..."
+                          required></textarea>
+            </div>
+
+            <div class="room-grid">
+
+                <div class="room-field">
+                    <label>What are you sharing?</label>
+                    <select name="listing_type" required>
+                        <option value="">Select type</option>
+                        <option value="Entire Room">Entire Room</option>
+                        <option value="Vacant Bed">Vacant Bed</option>
+                    </select>
+                </div>
+
+                <div class="room-field">
+                    <label>Room Type</label>
+                    <select name="room_type" required>
+                        <option value="">Select room type</option>
+                        <option value="Single">Single</option>
+                        <option value="Shared">Shared</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="room-section-divider"></div>
+
+            <h3 class="room-section-title">02. Rent & Location</h3>
+
+            <div class="room-field">
+                <label>Location / Address</label>
+                <input type="text" name="location"
+                       placeholder="Area, landmark or full address"
+                       required>
+            </div>
+
+            <div class="room-grid">
+
+                <div class="room-field">
+                    <label>Monthly Rent (₹)</label>
+                    <input type="number" name="monthly_rent"
+                           placeholder="e.g. 5000"
+                           min="1" step="0.01" required>
+                </div>
+
+                <div class="room-field">
+                    <label>Available Beds</label>
+                    <input type="number" name="available_beds"
+                           placeholder="e.g. 2"
+                           min="1" required>
+                </div>
+
+            </div>
+
+            <div class="room-grid">
+
+                <div class="room-field">
+                    <label>Gender Preference</label>
+                    <select name="gender_preference" required>
+                        <option value="Any">Any</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+
+                <div class="room-field">
+                    <label>Available From</label>
+                    <input type="date" name="available_from" required>
+                </div>
+
+            </div>
+
+            <div class="room-section-divider"></div>
+
+            <h3 class="room-section-title">03. Facilities</h3>
+
+            <div class="facilities-grid">
+
+                {% for facility in [
+                    "Wi-Fi", "AC", "Attached Bathroom",
+                    "Washing Machine", "Kitchen",
+                    "Parking", "Furnished", "Power Backup"
+                ] %}
+
+                <label class="facility-option">
+                    <input type="checkbox" name="facilities"
+                           value="{{ facility }}">
+                    <span>{{ facility }}</span>
+                </label>
+
+                {% endfor %}
+
+            </div>
+
+            <div class="room-section-divider"></div>
+
+            <h3 class="room-section-title">04. Room Photos</h3>
+
+            <div class="room-upload-area"
+                 onclick="document.getElementById('roomImages').click()">
+
+                <div class="room-upload-icon">↑</div>
+                <strong>Upload room photos</strong>
+                <p>Select 2 to 5 clear photos of your accommodation.</p>
+                <small>JPG, PNG or WEBP · Maximum 5 MB per image</small>
+
+            </div>
+
+            <input type="file"
+                   id="roomImages"
+                   name="room_images"
+                   accept=".jpg,.jpeg,.png,.webp"
+                   multiple
+                   required
+                   hidden>
+
+            <div id="roomImagePreview" class="room-image-preview"></div>
+
+            <button type="submit" class="room-publish-btn">
+                Publish Room Listing →
+            </button>
+
+            <p class="room-footer-note">
+                Help fellow students find a comfortable place to stay.
+            </p>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/post_room.js') }}"></script>
+
+{% endblock %}

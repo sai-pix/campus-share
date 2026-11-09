@@ -1,0 +1,64 @@
+
+{% extends "base.html" %}
+
+{% block title %}Verify Email | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="auth-container">
+
+    <div class="auth-card">
+
+        <div class="auth-heading">
+
+            <span class="eyebrow">EMAIL VERIFICATION</span>
+
+            <h1>Verify your email</h1>
+
+            <p>
+                We sent a 6-digit verification code to your college email.
+                Enter it below to activate your CampusShare account.
+            </p>
+
+        </div>
+
+        <form method="POST">
+
+            <div class="form-group">
+
+                <label for="otp">Verification OTP</label>
+
+                <input
+                    type="text"
+                    id="otp"
+                    name="otp"
+                    placeholder="Enter 6-digit OTP"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="primary-button">
+                Verify Email →
+            </button>
+
+        </form>
+
+        <p class="auth-bottom">
+            Didn't receive the code?
+            <a href="{{ url_for('auth.register') }}">Register again</a>
+        </p>
+
+        <p class="forgot-link">
+            <a href="{{ url_for('auth.login') }}">Back to Login</a>
+        </p>
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CampusShare{% endblock %}</title>
+
+    <meta name="description"
+          content="CampusShare - Your campus marketplace for renting, sharing and finding student accommodation.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="site-header">
+        <nav class="navbar container">
+
+            <a href="{{ url_for('home') }}" class="brand">
+                <span class="brand-icon">C</span>
+                <span>Campus<span class="brand-highlight">Share</span></span>
+            </a>
+
+            <div class="nav-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('browse_resources') }}">Explore</a>
+                <a href="{{ url_for('post_room') }}">CampusStay</a>
+
+                {% if session.get('student_id') %}
+                    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+                    <a href="{{ url_for('my_bookings') }}">My Bookings</a>
+                {% endif %}
+            </div>
+
+            <div class="nav-actions">
+                {% if session.get('student_id') %}
+
+                    <span class="nav-user">
+                        Hi, {{ session.get('student_name', 'Student') }}
+                    </span>
+
+                    <a href="{{ url_for('logout') }}"
+                       class="button button-outline button-small">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{{ url_for('auth.login') }}"
+                       class="nav-login">
+                        Log in
+                    </a>
+
+                    <a href="{{ url_for('auth.register') }}"
+                       class="button button-primary button-small">
+                        Join CampusShare
+                    </a>
+
+                {% endif %}
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Flash messages -->
+    <div class="container flash-container">
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+
+            {% if messages %}
+
+                {% for category, message in messages %}
+
+                    <div class="flash-message">
+                        <span>{{ message }}</span>
+                    </div>
+
+                {% endfor %}
+
+            {% endif %}
+
+        {% endwith %}
+
+    </div>
+
+
+    <!-- Main content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="site-footer">
+
+        <div class="container footer-content">
+
+            <div class="footer-brand">
+                <a href="{{ url_for('home') }}" class="brand">
+                    <span class="brand-icon">C</span>
+                    <span>Campus<span class="brand-highlight">Share</span></span>
+                </a>
+
+                <p>
+                    A smarter way for students to share,
+                    rent and find their campus essentials.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('browse_resources') }}">Explore Resources</a>
+                <a href="{{ url_for('post_room') }}">CampusStay</a>
+            </div>
+
+        </div>
+
+        <div class="container footer-bottom">
+            © {{ 2026 }} CampusShare. Built for students.
+        </div>
+
+    </footer>
+
+    {% block scripts %}{% endblock %}
+
+</body>
+</html>

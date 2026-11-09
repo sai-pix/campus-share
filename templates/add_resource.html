@@ -1,0 +1,131 @@
+
+{% extends "base.html" %}
+
+{% block title %}Add Resource | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="add-resource-page">
+
+    <div class="resource-form-card">
+
+        <div class="resource-form-heading">
+            <span class="resource-eyebrow">SHARE WITH YOUR CAMPUS</span>
+            <h1>List a Resource</h1>
+            <p>Give your unused items a new purpose. Let other students borrow them.</p>
+        </div>
+
+        <form method="POST"
+              enctype="multipart/form-data"
+              id="resourceForm">
+
+            <div class="resource-form-group">
+                <label for="resourceTitle">Resource Title</label>
+                <input
+                    type="text"
+                    id="resourceTitle"
+                    name="title"
+                    placeholder="e.g. Scientific Calculator"
+                    required
+                >
+            </div>
+
+            <div class="resource-form-group">
+                <label for="resource_image">Resource Photo</label>
+
+                <label for="resource_image" class="upload-area">
+                    <span class="upload-icon">↑</span>
+                    <strong>Click to upload a photo</strong>
+                    <span>Choose a clear picture of your resource</span>
+                    <small>JPG, PNG or WEBP · Maximum 5 MB</small>
+                </label>
+
+                <input
+                    type="file"
+                    id="resource_image"
+                    name="resource_image"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    class="resource-file-input"
+                >
+
+                <div class="image-preview-container" id="previewContainer">
+                    <img id="imagePreview" src="" alt="Resource preview">
+                    <button type="button" id="removeImage" class="remove-image-btn">
+                        Remove photo
+                    </button>
+                </div>
+            </div>
+
+            <div class="resource-form-group">
+                <label for="description">Description</label>
+                <textarea
+                    id="description"
+                    name="description"
+                    placeholder="Describe your resource, its features and how students can use it..."
+                    rows="4"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="resource-form-row">
+
+                <div class="resource-form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select category</option>
+                        <option value="Books">Books</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Lab Equipment">Lab Equipment</option>
+                        <option value="Stationery">Stationery</option>
+                        <option value="Sports">Sports Equipment</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="resource-form-group">
+                    <label for="condition">Condition</label>
+                    <select id="condition" name="condition" required>
+                        <option value="">Select condition</option>
+                        <option value="New">New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Good">Good</option>
+                        <option value="Fair">Fair</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="resource-form-group">
+                <label for="rentalPrice">Rental Price</label>
+                <div class="price-input-wrapper">
+                    <span>₹</span>
+                    <input
+                        type="number"
+                        id="rentalPrice"
+                        name="rental_price"
+                        placeholder="Enter price per day"
+                        min="0"
+                        step="0.01"
+                        required
+                    >
+                </div>
+                <small class="field-hint">Set a fair price per day for other students.</small>
+            </div>
+
+            <button type="submit" class="publish-resource-btn">
+                Publish Resource <span>→</span>
+            </button>
+
+            <p class="form-footer-note">
+                By publishing, you agree to share this resource responsibly with your campus.
+            </p>
+
+        </form>
+
+    </div>
+
+</section>
+
+<script src="{{ url_for('static', filename='js/add_resource.js') }}"></script>
+
+{% endblock %}

@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+
+{% block title %}Browse Resources | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-container">
+
+    <div class="dashboard-welcome">
+        <span class="eyebrow">CAMPUS MARKETPLACE</span>
+        <h1>Browse Resources</h1>
+        <p>Discover useful resources shared by your fellow students.</p>
+    </div>
+
+    <div class="resource-grid">
+
+        {% for resource in resources %}
+
+        <div class="resource-card">
+
+            {% if resource.image_filename %}
+                <img
+                    src="{{ url_for('static', filename='uploads/' + resource.image_filename) }}"
+                    alt="{{ resource.title }}"
+                    class="resource-image"
+                >
+            {% else %}
+                <div class="no-image">
+                    No Image Available
+                </div>
+            {% endif %}
+
+            <span class="resource-category">
+                {{ resource.category }}
+            </span>
+
+            <h2>{{ resource.title }}</h2>
+
+            <p class="resource-description">
+                {{ resource.description }}
+            </p>
+
+            <div class="resource-details">
+                <p>
+                    <strong>Condition:</strong>
+                    {{ resource.condition }}
+                </p>
+
+                <p>
+                    <strong>Owner:</strong>
+                    {{ resource.owner_name }}
+                </p>
+            </div>
+
+            <div class="resource-price">
+                ₹{{ "%.2f"|format(resource.rental_price) }}
+                <span>/ day</span>
+            </div>
+
+            {% if resource.student_id != session.get('student_id') %}
+
+                <a
+                    href="{{ url_for('resource_details', resource_id=resource.id) }}"
+                    class="primary-button"
+                >
+                    View Details →
+                </a>
+
+
+                {% else %}
+
+                    <p class="owner-label">
+                        Your Resource
+                    </p>
+
+                    <form
+                        action="{{ url_for('delete_resource', resource_id=resource.id) }}"
+                        method="POST"
+                        onsubmit="return confirm('Are you sure you want to delete this resource?');"
+                    >
+                        <button type="submit" class="delete-resource-btn">
+                            🗑 Delete Resource
+                        </button>
+                    </form>
+
+                {% endif %}
+
+
+                        </div>
+
+                        {% else %}
+
+                        <div class="empty-state">
+                            <h2>No Resources Available Yet</h2>
+
+                            <p>
+                                Be the first student to share a resource with your campus!
+                            </p>
+
+                            <a href="{{ url_for('add_resource') }}"
+                            class="primary-button">
+                                Add a Resource
+                            </a>
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+
+                {% endblock %}

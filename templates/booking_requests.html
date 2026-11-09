@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Booking Requests | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-container">
+
+    <div class="dashboard-welcome">
+        <span class="eyebrow">LENDER ACTIVITY</span>
+        <h1>Booking Requests</h1>
+        <p>Manage rental requests received for your resources.</p>
+    </div>
+
+    <div class="resource-grid">
+
+        {% for booking in requests %}
+
+        <div class="resource-card">
+
+            <h2>{{ booking.resource_title }}</h2>
+
+            <p><strong>Borrower:</strong> {{ booking.borrower_name }}</p>
+
+            <p><strong>Email:</strong> {{ booking.borrower_email }}</p>
+
+            <p><strong>Start:</strong> {{ booking.start_date }}</p>
+
+            <p><strong>End:</strong> {{ booking.end_date }}</p>
+
+            <div class="resource-price">
+                ₹{{ "%.2f"|format(booking.total_price) }}
+            </div>
+
+            <p><strong>Status:</strong> {{ booking.status }}</p>
+
+            {% if booking.status == 'Pending' %}
+
+<div class="booking-actions">
+
+    <form method="POST"
+          action="{{ url_for('update_booking', booking_id=booking.id) }}">
+
+        <input type="hidden" name="action" value="Accepted">
+
+        <button type="submit" class="primary-button">
+            Accept Request
+        </button>
+
+    </form>
+
+    <form method="POST"
+          action="{{ url_for('update_booking', booking_id=booking.id) }}">
+
+        <input type="hidden" name="action" value="Rejected">
+
+        <button type="submit" class="reject-button">
+            Reject Request
+        </button>
+
+    </form>
+
+</div>
+
+{% endif %}
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <h2>No booking requests yet!</h2>
+            <p>Requests from other students will appear here.</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

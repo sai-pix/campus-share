@@ -1,0 +1,288 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ resource.title }} | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="resource-details-page">
+
+    <a href="{{ url_for('browse_resources') }}" class="back-link">
+        ← Back to Resources
+    </a>
+
+    <div class="resource-details-layout">
+
+        <!-- LEFT: Resource information -->
+
+        <div class="resource-information">
+
+            {% if resource.image_filename %}
+                <img
+                    src="{{ url_for('static', filename='uploads/' + resource.image_filename) }}"
+                    alt="{{ resource.title }}"
+                    class="details-resource-image"
+                >
+            {% else %}
+                <div class="details-no-image">
+                    No Image Available
+                </div>
+            {% endif %}
+
+            <span class="resource-category">
+                {{ resource.category }}
+            </span>
+
+            <h1>{{ resource.title }}</h1>
+
+            <div class="details-price">
+                ₹{{ "%.2f"|format(resource.rental_price) }}
+                <span>/ day</span>
+            </div>
+
+            <div class="details-info-box">
+                <p>
+                    <strong>Condition:</strong>
+                    {{ resource.condition }}
+                </p>
+
+                <p>
+                    <strong>Owner:</strong>
+                    {{ resource.owner_name }}
+                </p>
+            </div>
+
+            <div class="resource-description-section">
+                <h3>About this Resource</h3>
+                <p>{{ resource.description }}</p>
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT: Booking section -->
+
+        <div class="booking-panel">
+
+            <h2>Book This Resource</h2>
+
+            <p class="booking-subtitle">
+                Select your rental dates to calculate the total amount.
+            </p>
+
+            <form
+                method="POST"
+                action="{{ url_for('book_resource', resource_id=resource.id) }}"
+                id="resourceBookingForm"
+            >
+
+                <div class="form-group">
+                    <label for="startDate">Start Date</label>
+
+                    <input
+                        type="date"
+                        id="startDate"
+                        name="start_date"
+                        min="{{ today }}"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="endDate">End Date</label>
+
+                    <input
+                        type="date"
+                        id="endDate"
+                        name="end_date"
+                        min="{{ today }}"
+                        required
+                        disabled
+                    >
+                </div>
+
+                <p class="booking-limit-note">
+                    Maximum rental period: One calendar month.
+                </p>
+
+                <!-- Price breakdown -->
+
+                <div class="price-breakdown">
+
+                    <div class="price-row">
+                        <span>Price per day</span>
+
+                        <strong>
+                            ₹{{ "%.2f"|format(resource.rental_price) }}
+                        </strong>
+                    </div>
+
+                    <div class="price-row">
+                        <span>Rental days</span>
+
+                        <strong id="rentalDays">0</strong>
+                    </div>
+
+                    <div class="price-row total-price">
+                        <span>Total Amount</span>
+
+                        <strong id="totalPrice">₹0.00</strong>
+                    </div>
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-button booking-submit"
+                    disabled
+                    id="bookingButton"
+                >
+                    Request Booking →
+                </button>
+
+            </form>
+
+            <p class="booking-footer">
+                Your booking will be sent to the resource owner for approval.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const startInput = document.getElementById("startDate");
+    const endInput = document.getElementById("endDate");
+
+    const rentalDays = document.getElementById("rentalDays");
+    const totalPrice = document.getElementById("totalPrice");
+
+    const bookingButton = document.getElementById("bookingButton");
+    const bookingForm = document.getElementById("resourceBookingForm");
+
+    const pricePerDay = {{ resource.rental_price|tojson }};
+
+    function parseLocalDate(value) {
+        const [year, month, day] = value.split("-").map(Number);
+        return new Date(year, month - 1, day);
+    }
+
+    // Add one calendar month, clamping to the last
+    // valid day if the next month is shorter.
+    function addOneCalendarMonth(date) {
+
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const day = date.getDate();
+
+        const targetMonth = month + 1;
+        const lastDay = new Date(
+            year,
+            targetMonth + 1,
+            0
+        ).getDate();
+
+        return new Date(
+            year,
+            targetMonth,
+            Math.min(day, lastDay)
+        );
+    }
+
+    function formatDate(date) {
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+    }
+
+    function resetPrice() {
+        rentalDays.textContent = "0";
+        totalPrice.textContent = "₹0.00";
+        bookingButton.disabled = true;
+    }
+
+    startInput.addEventListener("change", function () {
+
+        resetPrice();
+
+        endInput.value = "";
+        endInput.disabled = true;
+        endInput.removeAttribute("max");
+
+        if (!startInput.value) {
+            return;
+        }
+
+        const start = parseLocalDate(startInput.value);
+        const maximumEnd = addOneCalendarMonth(start);
+
+        endInput.min = startInput.value;
+        endInput.max = formatDate(maximumEnd);
+        endInput.disabled = false;
+
+    });
+
+    endInput.addEventListener("change", function () {
+
+        resetPrice();
+
+        if (!startInput.value || !endInput.value) {
+            return;
+        }
+
+        const start = parseLocalDate(startInput.value);
+        const end = parseLocalDate(endInput.value);
+        const maximumEnd = addOneCalendarMonth(start);
+
+        if (end < start || end > maximumEnd) {
+            alert("Rental period cannot exceed one calendar month.");
+            endInput.value = "";
+            return;
+        }
+
+        // Inclusive rental-day calculation
+        const days = Math.round(
+            (end - start) / (1000 * 60 * 60 * 24)
+        ) + 1;
+
+        const total = days * pricePerDay;
+
+        rentalDays.textContent = days;
+        totalPrice.textContent = "₹" + total.toFixed(2);
+
+        bookingButton.disabled = false;
+
+    });
+
+    bookingForm.addEventListener("submit", function (event) {
+
+        if (!startInput.value || !endInput.value) {
+            event.preventDefault();
+            alert("Please select both rental dates.");
+            return;
+        }
+
+        const start = parseLocalDate(startInput.value);
+        const end = parseLocalDate(endInput.value);
+
+        if (end < start || end > addOneCalendarMonth(start)) {
+            event.preventDefault();
+            alert("Please select a valid rental period of at most one calendar month.");
+        }
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}My Bookings | CampusShare{% endblock %}
+
+{% block content %}
+
+<section class="dashboard-container">
+
+    <div class="dashboard-welcome">
+        <span class="eyebrow">RENTAL ACTIVITY</span>
+        <h1>My Bookings</h1>
+        <p>Track your rental requests and booking details.</p>
+    </div>
+
+    <div class="resource-grid">
+
+        {% for booking in bookings %}
+
+        <div class="resource-card">
+
+            <span class="resource-category">
+                {{ booking.category }}
+            </span>
+
+            <h2>{{ booking.resource_title }}</h2>
+
+            <p><strong>Owner:</strong> {{ booking.owner_name }}</p>
+
+            <p><strong>Start Date:</strong> {{ booking.start_date }}</p>
+
+            <p><strong>End Date:</strong> {{ booking.end_date }}</p>
+
+            <div class="resource-price">
+                ₹{{ "%.2f"|format(booking.total_price) }}
+                <span>/ total</span>
+            </div>
+
+            <p>
+                <strong>Status:</strong>
+                {{ booking.status }}
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-state">
+            <h2>No bookings yet!</h2>
+            <p>Your rental requests will appear here.</p>
+            <a href="{{ url_for('browse_resources') }}">
+                Browse Resources
+            </a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}CampusShare | Student Marketplace{% endblock %}
+
+{% block content %}
+
+<section class="hero-section">
+    <div class="container hero-content">
+
+        <div class="hero-text">
+            <span class="category-badge">THE STUDENT MARKETPLACE</span>
+
+            <h1>
+                Everything you need.
+                <span>Right around campus.</span>
+            </h1>
+
+            <p>
+                Rent essentials, share resources and discover
+                affordable student accommodation — all in one place.
+            </p>
+
+            <div class="hero-actions">
+                <a href="{{ url_for('browse_resources') }}"
+                   class="button button-primary">
+                    Explore Marketplace →
+                </a>
+
+                <a href="{{ url_for('post_room') }}"
+                   class="button button-outline">
+                    Find or Post a Room
+                </a>
+            </div>
+
+            <div class="hero-trust">
+                <span>✦ Student community</span>
+                <span>✦ Affordable rentals</span>
+                <span>✦ Campus living</span>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-image-card">
+                <div class="hero-image-placeholder">🎓</div>
+                <div class="hero-floating-card">
+                    <strong>Campus life, simplified.</strong>
+                    <p>Share more. Spend less.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<section class="container page-section">
+
+    <div class="page-heading">
+        <h2 class="section-title">Explore CampusShare</h2>
+        <p>Everything students need in one marketplace.</p>
+    </div>
+
+    <div class="resource-grid">
+
+        <a href="{{ url_for('browse_resources') }}"
+           class="feature-card">
+            <div class="feature-icon">📚</div>
+            <h3>Rent Resources</h3>
+            <p>Discover affordable books, gadgets and student essentials.</p>
+            <span>Explore resources →</span>
+        </a>
+
+        <a href="{{ url_for('add_resource') }}"
+           class="feature-card">
+            <div class="feature-icon">🤝</div>
+            <h3>Share & Earn</h3>
+            <p>List your unused items and earn by renting them to students.</p>
+            <span>List an item →</span>
+        </a>
+
+        <a href="{{ url_for('post_room') }}"
+           class="feature-card">
+            <div class="feature-icon">🏠</div>
+            <h3>CampusStay</h3>
+            <p>Find affordable rooms and vacant beds near your campus.</p>
+            <span>Explore CampusStay →</span>
+        </a>
+
+    </div>
+
+</section>
+
+
+<section class="stay-banner">
+    <div class="container stay-banner-content">
+        <div>
+            <span class="category-badge">INTRODUCING CAMPUSSTAY</span>
+            <h2>Find a place that feels like home.</h2>
+            <p>
+                Discover rooms, shared spaces and vacant beds
+                listed by fellow students.
+            </p>
+        </div>
+
+        <a href="{{ url_for('post_room') }}"
+           class="button button-primary">
+            Explore CampusStay →
+        </a>
+    </div>
+</section>
+
+{% endblock %}
