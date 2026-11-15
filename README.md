@@ -232,24 +232,6 @@ Instead of purchasing every item individually, students can discover and rent re
 
 ---
 
-## 🎓 CS50x Final Project
-
-**Project Name:** CampusShare
-**Course:** CS50x – Introduction to Computer Science
-**Project Type:** Web Application
-**Backend:** Python and Flask
-**Database:** SQLite
-
-### Demonstration Video
-
-[Add your CS50 project demonstration video link here.]
-
-### AI Assistance Disclosure
-
-ChatGPT was used as a learning and development assistant during parts of the project, including programming explanations, debugging guidance, and implementation suggestions. The project code and final implementation were reviewed and tested by the student.
-
----
-
 ## 👨‍💻 Conclusion
 
 CampusShare brings students together through a shared digital platform where they can list, discover, rent, and manage campus resources and accommodation opportunities.
